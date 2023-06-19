@@ -30,11 +30,11 @@ RUN gem install fluentd --no-doc
 RUN fluent-gem install fluent-plugin-s3
 RUN fluent-gem install fluent-plugin-kafka
 
-COPY eventsim.sh ./eventsim.sh
+COPY --chmod=0755 eventsim.sh ./eventsim.sh
 COPY examples ./examples
 COPY data ./data
 COPY fluent.conf ./fluent.conf
 
-COPY entrypoint.sh ./entrypoint.sh
+COPY --chmod=0755 entrypoint.sh ./entrypoint.sh
 
 ENTRYPOINT ["./entrypoint.sh"]
