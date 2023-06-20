@@ -35,6 +35,10 @@ COPY examples ./examples
 COPY data ./data
 COPY fluent.conf ./fluent.conf
 
+COPY --chmod=0755 init_minio.sh ./init_minio.sh
+
+RUN ./init_minio.sh
+
 COPY --chmod=0755 entrypoint.sh ./entrypoint.sh
 
 ENTRYPOINT ["./entrypoint.sh"]
