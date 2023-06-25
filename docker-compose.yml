@@ -4,19 +4,14 @@ services:
     hostname: eventsim
     stdin_open: true
     tty: true
-    container_name: eventsim2
+    container_name: eventsim
     build:
       context: .
     entrypoint: './entrypoint.sh'
-    volumes:
-      - ./eventsim:/opt/eventsim/files
-    ports:
-      - '8888:8888'
-      - '9083:9083'
     env_file:
       - 'minio.env'
     networks:
-      - trino-network
+      - eventsim-network
   minio:
     image: 'minio/minio:latest'
     hostname: minio
@@ -24,14 +19,12 @@ services:
     ports:
       - '9000:9000'
       - '9001:9001'
-    volumes:
-      - ./minio:/data
     env_file:
       - 'minio.env'
     command: server --console-address ":9001" /data
     networks:
-      - trino-network
+      - eventsim-network
 
 networks:
-  trino-network:
+  eventsim-network:
     driver: bridge

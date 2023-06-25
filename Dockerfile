@@ -14,7 +14,7 @@ WORKDIR /opt/eventsim
 COPY --from=builder /opt/eventsim/target/scala-2.12/eventsim-assembly-2.0.jar ./
 
 RUN apt-get update
-RUN apt-get install wget -y
+RUN apt-get install wget curl -y
 RUN apt-get install gnupg make gcc -y
 
 # Install Java 8
@@ -30,11 +30,14 @@ RUN gem install fluentd --no-doc
 RUN fluent-gem install fluent-plugin-s3
 RUN fluent-gem install fluent-plugin-kafka
 
+# Install Minio Client
+
+RUN curl -o /usr/local/bin/mc https://dl.min.io/client/mc/release/linux-amd64/mc && chmod +x /usr/local/bin/mc
+
 COPY --chmod=0755 eventsim.sh ./eventsim.sh
 COPY examples ./examples
 COPY data ./data
 COPY fluent.conf ./fluent.conf
-
 COPY --chmod=0755 entrypoint.sh ./entrypoint.sh
 
 ENTRYPOINT ["./entrypoint.sh"]
